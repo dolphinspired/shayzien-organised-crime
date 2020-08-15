@@ -1,5 +1,7 @@
 package com.dylange.organisedcrime.models;
 
+import java.util.Objects;
+
 public class OrganisedCrimeLocation {
 
     private String locationMessage;
@@ -22,5 +24,20 @@ public class OrganisedCrimeLocation {
 
     public boolean isMultiCombat() {
         return isMultiCombat;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        OrganisedCrimeLocation that = (OrganisedCrimeLocation) o;
+        return isMultiCombat == that.isMultiCombat &&
+                locationMessage.equals(that.locationMessage) &&
+                description.equals(that.description);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(locationMessage, description, isMultiCombat);
     }
 }

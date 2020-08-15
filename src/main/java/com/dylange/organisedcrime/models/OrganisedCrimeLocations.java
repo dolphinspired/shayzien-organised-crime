@@ -21,7 +21,7 @@ public class OrganisedCrimeLocations {
         for (LocationGroup group : locationGroups) {
             locationList.addAll(Arrays.asList(group.getLocations()));
         }
-        allLocations = (OrganisedCrimeLocation[])locationList.toArray();
+        allLocations = locationList.toArray(new OrganisedCrimeLocation[0]);
     }
 
     interface LocationGroup {

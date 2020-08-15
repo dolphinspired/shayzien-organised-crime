@@ -42,8 +42,7 @@ public class InformationBoardTextReader {
             return new GangInfo(
                     locationText,
                     timeText,
-                    client.getWorld(),
-                    System.currentTimeMillis()
+                    client.getWorld()
             );
         }
     }
