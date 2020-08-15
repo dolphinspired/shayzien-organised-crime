@@ -1,12 +1,12 @@
-package com.runelite.organisedcrime.tools;
+package com.dylange.organisedcrime.tools;
 
-import com.runelite.organisedcrime.models.GangInfo;
+import com.dylange.organisedcrime.models.GangInfo;
 import net.runelite.api.Client;
 import net.runelite.api.widgets.Widget;
 
 import javax.annotation.Nullable;
 
-import static com.runelite.organisedcrime.tools.WidgetConstants.GROUP_ID_INFORMATION_BOARD;
+import static com.dylange.organisedcrime.tools.WidgetConstants.GROUP_ID_INFORMATION_BOARD;
 
 public class InformationBoardTextReader {
     private static final int INDEX_START_INFO_BOARD_TEXT = 1;

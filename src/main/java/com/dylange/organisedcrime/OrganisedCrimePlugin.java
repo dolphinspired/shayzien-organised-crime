@@ -1,40 +1,49 @@
-package com.runelite.organisedcrime;
+package com.dylange.organisedcrime;
 
+import com.dylange.organisedcrime.config.OrganisedCrimeConfig;
+import com.dylange.organisedcrime.models.GangInfo;
+import com.dylange.organisedcrime.tools.InformationBoardTextReader;
 import com.google.inject.Provides;
 import javax.inject.Inject;
 
-import com.runelite.organisedcrime.config.*;
-import com.runelite.organisedcrime.models.GangInfo;
-import com.runelite.organisedcrime.tools.InformationBoardTextReader;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.WidgetLoaded;
-import net.runelite.api.widgets.Widget;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.ui.ClientToolbar;
+import net.runelite.client.ui.NavigationButton;
+import net.runelite.client.util.ImageUtil;
 
-import static com.runelite.organisedcrime.tools.WidgetConstants.GROUP_ID_INFORMATION_BOARD;
-import static com.runelite.organisedcrime.tools.WidgetConstants.GROUP_ID_NO_INFORMATION_ATM;
+import java.awt.image.BufferedImage;
+
+import static com.dylange.organisedcrime.tools.WidgetConstants.GROUP_ID_INFORMATION_BOARD;
+import static com.dylange.organisedcrime.tools.WidgetConstants.GROUP_ID_NO_INFORMATION_ATM;
 
 @Slf4j
 @PluginDescriptor(
-	name = "Organised crime"
+	name = "Organised crime",
+	description = "Keeps track of organised crime locations across worlds",
+	enabledByDefault = true // TODO: set this to false when finished developing
 )
 public class OrganisedCrimePlugin extends Plugin
 {
-	private static final int INDEX_START_INFO_BOARD_TEXT = 1;
-	private static final int INDEX_END_INFO_BOARD_TEXT = 11;
-	private static final String START_TIME_TEXT = "The meeting is expected to";
+
+	private NavigationButton navButton;
+	private OrganisedCrimePanel panel;
 
 	@Inject
 	private Client client;
 
 	@Inject
-	private OrganisedCrimeConfig organisedCrimeConfig;
+	private ClientToolbar clientToolbar;
+
+	@Inject
+	private OrganisedCrimeConfig config;
 
 	@Provides
 	OrganisedCrimeConfig provideOrganisedCrimeConfig(ConfigManager configManager)
@@ -45,13 +54,24 @@ public class OrganisedCrimePlugin extends Plugin
 	@Override
 	protected void startUp() throws Exception
 	{
-		log.info("Example started!");
+		panel = new OrganisedCrimePanel(this, config);
+
+		final BufferedImage icon = ImageUtil.getResourceStreamFromClass(getClass(), "icon.png");
+
+		navButton = NavigationButton.builder()
+				.tooltip("Organised Crime")
+				.icon(icon)
+				.priority(5)
+				.panel(panel)
+				.build();
+		clientToolbar.addNavigation(navButton);
 	}
 
 	@Override
 	protected void shutDown() throws Exception
 	{
 		log.info("Example stopped!");
+		clientToolbar.removeNavigation(navButton);
 	}
 
 	@Subscribe

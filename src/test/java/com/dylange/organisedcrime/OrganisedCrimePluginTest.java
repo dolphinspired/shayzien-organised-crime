@@ -1,4 +1,4 @@
-package com.runelite.organisedcrime;
+package com.dylange.organisedcrime;
 
 import net.runelite.client.RuneLite;
 import net.runelite.client.externalplugins.ExternalPluginManager;

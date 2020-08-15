@@ -1,4 +1,4 @@
-package com.runelite.organisedcrime.config;
+package com.dylange.organisedcrime.config;
 
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;

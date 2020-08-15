@@ -1,4 +1,4 @@
-package com.runelite.organisedcrime.models;
+package com.dylange.organisedcrime.models;
 
 public class GangInfo {
     private String location;
