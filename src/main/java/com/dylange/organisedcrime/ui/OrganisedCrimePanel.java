@@ -22,14 +22,12 @@ public class OrganisedCrimePanel extends PluginPanel {
         this.config = config;
         this.onWorldClicked = onWorldClicked;
 
-        setBorder(new EmptyBorder(6, 6, 6, 6));
+        setLayout(new BorderLayout(0, 8));
+        setBorder(new EmptyBorder(0, 0, 0, 0));
         setBackground(ColorScheme.DARK_GRAY_COLOR);
-        setLayout(new BorderLayout());
 
-        // Create layout panel for wrapping
         layoutPanel.setLayout(new BoxLayout(layoutPanel, BoxLayout.Y_AXIS));
         add(layoutPanel, BorderLayout.NORTH);
-
     }
 
     @Override

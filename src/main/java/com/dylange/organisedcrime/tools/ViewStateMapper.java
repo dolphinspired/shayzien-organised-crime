@@ -32,7 +32,7 @@ public class ViewStateMapper {
             viewStates.add(
                     new LocationViewState(
                             organisedCrimeLocation.getDescription(),
-                            "TODO",
+                            organisedCrimeLocation.getImage(),
                             worldToTimeRemainingText
                     )
             );

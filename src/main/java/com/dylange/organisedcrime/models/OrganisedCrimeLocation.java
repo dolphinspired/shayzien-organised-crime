@@ -6,11 +6,13 @@ public class OrganisedCrimeLocation {
 
     private String locationMessage;
     private String description;
+    private String image;
     private boolean isMultiCombat;
 
-    public OrganisedCrimeLocation(String locationMessage, String description, boolean isMultiCombat) {
+    public OrganisedCrimeLocation(String locationMessage, String description, String image, boolean isMultiCombat) {
         this.locationMessage = locationMessage;
         this.description = description;
+        this.image = image;
         this.isMultiCombat = isMultiCombat;
     }
 
@@ -20,6 +22,10 @@ public class OrganisedCrimeLocation {
 
     public String getDescription() {
         return description;
+    }
+
+    public String getImage() {
+        return image;
     }
 
     public boolean isMultiCombat() {

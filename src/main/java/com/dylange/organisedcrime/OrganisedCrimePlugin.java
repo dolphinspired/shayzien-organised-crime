@@ -95,6 +95,17 @@ public class OrganisedCrimePlugin extends Plugin {
                 .panel(panel)
                 .build();
         clientToolbar.addNavigation(navButton);
+
+        Map<Integer, GangInfo> mockData = new HashMap<>();
+        mockData.put(
+                1337,
+                new GangInfo("We've received reports of gang meeting in Arceuus, in a house south-east of the bank.", "something something 13 minutes", 1337)
+        );
+        mockData.put(
+                69,
+                new GangInfo("We've received reports of a gang meeting in Arceuus, west of the bank.", "something something now minutes", 69)
+        );
+        updatePanelData(mockData);
     }
 
     @Override
