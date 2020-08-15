@@ -1,5 +1,6 @@
 package com.dylange.organisedcrime.tools;
 
+import com.dylange.organisedcrime.models.GangExpectedTime;
 import com.dylange.organisedcrime.models.GangInfo;
 import com.dylange.organisedcrime.models.OrganisedCrimeLocation;
 import com.dylange.organisedcrime.ui.LocationViewState;
@@ -26,14 +27,14 @@ public class ViewStateMapper {
 
         ArrayList<LocationViewState> viewStates = new ArrayList<>();
         locationToInfoMap.forEach((organisedCrimeLocation, gangInfoForLocation) -> {
-            HashMap<Integer, String> worldToTimeRemainingText = new HashMap<>();
-            gangInfoForLocation.forEach(gangInfo -> worldToTimeRemainingText.put(gangInfo.getWorld(), gangInfo.getExpectedTime().toString()));
+            HashMap<Integer, GangExpectedTime> worldToExpectedTime = new HashMap<>();
+            gangInfoForLocation.forEach(gangInfo -> worldToExpectedTime.put(gangInfo.getWorld(), gangInfo.getExpectedTime()));
 
             viewStates.add(
                     new LocationViewState(
                             organisedCrimeLocation.getDescription(),
                             organisedCrimeLocation.getImage(),
-                            worldToTimeRemainingText
+                            worldToExpectedTime
                     )
             );
         });

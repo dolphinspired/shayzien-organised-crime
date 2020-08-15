@@ -125,7 +125,7 @@ public class OrganisedCrimeLocations {
                             true
                     ),
                     new OrganisedCrimeLocation(
-                            "We've received reports of a gang meeting in Hosidius, by the mine cart entrance in the south-west.",
+                            "We've received reports of a gang meeting in Hosidius, by the mine cart entrance in the south- west.",
                             "Directly north of the Hosidius mine cart track found northeast of the Woodcutting Guild.",
                             "hosidius5.png",
                             true

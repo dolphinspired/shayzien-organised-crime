@@ -20,10 +20,10 @@ public class GangExpectedTime {
     @Override
     public String toString() {
         long deltaTimeMillis = (timeRead + (initialMinutesUntilAppearance * 60 * 1000)) - System.currentTimeMillis();
-        long deltaTimeMinutes = deltaTimeMillis / 1000 / 60;
+        long deltaTimeMinutes = (deltaTimeMillis / 1000 / 60) + 1;
 
         if (deltaTimeMinutes == 0) {
-            return "Expected now";
+            return "Now";
         } else if (deltaTimeMinutes > 0) {
             return String.format("~%s mins", deltaTimeMinutes);
         } else {

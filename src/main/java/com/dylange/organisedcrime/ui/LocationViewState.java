@@ -1,16 +1,18 @@
 package com.dylange.organisedcrime.ui;
 
+import com.dylange.organisedcrime.models.GangExpectedTime;
+
 import java.util.Map;
 
 public class LocationViewState {
     private final String description;
     private final String image;
-    private final Map<Integer, String> worldToTimeRemainingText;
+    private final Map<Integer, GangExpectedTime> worldToGangExpectedTime;
 
-    public LocationViewState(String description, String image, Map<Integer, String> worldToTimeRemainingText) {
+    public LocationViewState(String description, String image, Map<Integer, GangExpectedTime> worldToTimeRemainingText) {
         this.description = description;
         this.image = image;
-        this.worldToTimeRemainingText = worldToTimeRemainingText;
+        this.worldToGangExpectedTime = worldToTimeRemainingText;
     }
 
     public String getDescription() {
@@ -21,8 +23,8 @@ public class LocationViewState {
         return image;
     }
 
-    public Map<Integer, String> getWorldToTimeRemainingText() {
-        return worldToTimeRemainingText;
+    public Map<Integer, GangExpectedTime> getWorldToExpectedTime() {
+        return worldToGangExpectedTime;
     }
 
     @Override
@@ -30,7 +32,7 @@ public class LocationViewState {
         return "LocationViewState{" +
                 "description='" + description + '\'' +
                 ", image='" + image + '\'' +
-                ", worldToTimeRemainingText=" + worldToTimeRemainingText +
+                ", worldToGangExpectedTime=" + worldToGangExpectedTime +
                 '}';
     }
 }

@@ -4,6 +4,7 @@ import com.dylange.organisedcrime.config.OrganisedCrimeConfig;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.PluginPanel;
+import net.runelite.client.ui.components.PluginErrorPanel;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -30,21 +31,30 @@ public class OrganisedCrimePanel extends PluginPanel {
         add(layoutPanel, BorderLayout.NORTH);
     }
 
-    @Override
-    public void invalidate() {
-        super.invalidate();
-
+    public void displayEmpty() {
+        layoutPanel.removeAll();
+        PluginErrorPanel errorPanel = new PluginErrorPanel();
+        errorPanel.setContent(
+                "Organised Crime Tracker",
+                "View the information board to start tracking locations."
+        );
+        layoutPanel.add(errorPanel);
     }
 
     public void display(List<LocationViewState> viewState) {
         layoutPanel.removeAll();
         viewState.forEach(locationViewState -> {
             log.error("View state item: " + locationViewState);
-            SwingUtilities.invokeLater(() -> {
-                layoutPanel.add(new LocationPanel(locationViewState, onWorldClicked));
-                layoutPanel.revalidate();
-            });
+            layoutPanel.add(new LocationPanel(locationViewState, onWorldClicked));
+            layoutPanel.revalidate();
         });
     }
 
+    public void refresh() {
+        for (Component component : layoutPanel.getComponents()) {
+            if (component instanceof LocationPanel) {
+                ((LocationPanel) component).refreshWorldButtons();
+            }
+        }
+    }
 }

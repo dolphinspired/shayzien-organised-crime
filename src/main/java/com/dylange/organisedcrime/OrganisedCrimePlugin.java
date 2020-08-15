@@ -8,12 +8,14 @@ import com.dylange.organisedcrime.ui.OrganisedCrimePanel;
 import com.google.inject.Provides;
 
 import javax.inject.Inject;
+import javax.swing.*;
 
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.World;
+import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.widgets.WidgetInfo;
@@ -47,8 +49,8 @@ import static com.dylange.organisedcrime.tools.WidgetConstants.GROUP_ID_NO_INFOR
         enabledByDefault = true // TODO: set this to false when finished developing
 )
 public class OrganisedCrimePlugin extends Plugin {
-    private static final int PANEL_REFRESH_TICK_THRESHOLD = 100; // 100 ticks, 1 minute.
-    private static final int STALE_DATA_REFRESH_TICK_THRESHOLD = 100; // 50 ticks, 30 seconds.
+    private static final int PANEL_REFRESH_TICK_THRESHOLD = 50; // 50 ticks, 30 seconds.
+    private static final int STALE_DATA_REFRESH_TICK_THRESHOLD = 50; // 50 ticks, 30 seconds.
 
     private NavigationButton navButton;
     private OrganisedCrimePanel panel;
@@ -57,6 +59,7 @@ public class OrganisedCrimePlugin extends Plugin {
 
     private World quickHopTargetWorld;
     private int displaySwitcherAttempts = 0;
+    private boolean previouslyOnLoginScreen = true;
 
     private static final int DISPLAY_SWITCHER_MAX_ATTEMPTS = 3;
 
@@ -95,17 +98,6 @@ public class OrganisedCrimePlugin extends Plugin {
                 .panel(panel)
                 .build();
         clientToolbar.addNavigation(navButton);
-
-        Map<Integer, GangInfo> mockData = new HashMap<>();
-        mockData.put(
-                1337,
-                new GangInfo("We've received reports of gang meeting in Arceuus, in a house south-east of the bank.", "something something 13 minutes", 1337)
-        );
-        mockData.put(
-                69,
-                new GangInfo("We've received reports of a gang meeting in Arceuus, west of the bank.", "something something now minutes", 69)
-        );
-        updatePanelData(mockData);
     }
 
     @Override
@@ -176,13 +168,25 @@ public class OrganisedCrimePlugin extends Plugin {
             final GangInfo gangInfo = InformationBoardTextReader.getDisplayedGangInfo(client);
             if (gangInfo != null) {
                 log.error("Location text: " + gangInfo.getLocationMessage());
-                log.error("Time text: " + gangInfo.getExpectedTime());
-                log.error("World: " + gangInfo.getWorld());
                 gangInfoMap.put(gangInfo.getWorld(), gangInfo);
                 updatePanelData(gangInfoMap);
             }
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+    @Subscribe
+    public void onGameStateChanged(GameStateChanged gameStateChanged) {
+        if (gameStateChanged.getGameState() == GameState.LOGIN_SCREEN) {
+            log.error("Login screen");
+            previouslyOnLoginScreen = true;
+            updatePanelData(new HashMap<>()); // Hide info when on login screen, as it may be out of date.
+            refreshPanel();
+        } else if (gameStateChanged.getGameState() == GameState.LOGGED_IN && previouslyOnLoginScreen) {
+            previouslyOnLoginScreen = false;
+            updatePanelData(gangInfoMap);
+            refreshPanel();
         }
     }
 
@@ -193,6 +197,7 @@ public class OrganisedCrimePlugin extends Plugin {
             if (!gangInfo.getExpectedTime().isStale()) {
                 gangInfoCopy.put(world, gangInfo);
             } else {
+                log.error("Successfully removed stale data: W" + gangInfo.getWorld());
                 removedAnyStaleValue.set(true);
             }
         });
@@ -206,11 +211,17 @@ public class OrganisedCrimePlugin extends Plugin {
 
     private void refreshPanel() {
         ticksSinceLastUiUpdate = 0;
-        panel.invalidate();
+        panel.refresh();
     }
 
     private void updatePanelData(Map<Integer, GangInfo> data) {
-        panel.display(ViewStateMapper.gangInfoMapToLocationListItems(data));
+        SwingUtilities.invokeLater(() -> {
+            if (data.isEmpty()) {
+                panel.displayEmpty();
+            } else {
+                panel.display(ViewStateMapper.gangInfoMapToLocationListItems(data));
+            }
+        });
     }
 
     private void hop(int worldId) {
