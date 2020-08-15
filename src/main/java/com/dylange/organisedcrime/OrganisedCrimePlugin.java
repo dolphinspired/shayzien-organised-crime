@@ -4,6 +4,7 @@ import com.dylange.organisedcrime.config.OrganisedCrimeConfig;
 import com.dylange.organisedcrime.models.GangInfo;
 import com.dylange.organisedcrime.tools.InformationBoardTextReader;
 import com.dylange.organisedcrime.tools.ViewStateMapper;
+import com.dylange.organisedcrime.ui.LocationViewState;
 import com.dylange.organisedcrime.ui.OrganisedCrimePanel;
 import com.google.inject.Provides;
 
@@ -36,6 +37,7 @@ import net.runelite.http.api.worlds.WorldResult;
 
 import java.awt.image.BufferedImage;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -215,11 +217,12 @@ public class OrganisedCrimePlugin extends Plugin {
     }
 
     private void updatePanelData(Map<Integer, GangInfo> data) {
+        final List<LocationViewState> listItems = ViewStateMapper.gangInfoMapToLocationListItems(data, config);
         SwingUtilities.invokeLater(() -> {
-            if (data.isEmpty()) {
+            if (listItems.isEmpty()) {
                 panel.displayEmpty();
             } else {
-                panel.display(ViewStateMapper.gangInfoMapToLocationListItems(data));
+                panel.display(listItems);
             }
         });
     }
