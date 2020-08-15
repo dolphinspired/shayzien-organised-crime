@@ -26,6 +26,7 @@ import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.chat.QueuedMessage;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.game.WorldService;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -61,7 +62,6 @@ public class OrganisedCrimePlugin extends Plugin {
 
     private World quickHopTargetWorld;
     private int displaySwitcherAttempts = 0;
-    private boolean previouslyOnLoginScreen = true;
 
     private static final int DISPLAY_SWITCHER_MAX_ATTEMPTS = 3;
 
@@ -100,6 +100,8 @@ public class OrganisedCrimePlugin extends Plugin {
                 .panel(panel)
                 .build();
         clientToolbar.addNavigation(navButton);
+
+        updatePanelData(gangInfoMap);
     }
 
     @Override
@@ -158,6 +160,13 @@ public class OrganisedCrimePlugin extends Plugin {
     }
 
     @Subscribe
+    public void onConfigChanged(ConfigChanged configChanged) {
+        if (configChanged.getGroup().equals("organised-crime")) {
+            updatePanelData(gangInfoMap);
+        }
+    }
+
+    @Subscribe
     public void onWidgetLoaded(WidgetLoaded widgetLoaded) {
         if (widgetLoaded.getGroupId() != GROUP_ID_INFORMATION_BOARD) return;
         if (widgetLoaded.getGroupId() == GROUP_ID_NO_INFORMATION_ATM) {
@@ -180,14 +189,7 @@ public class OrganisedCrimePlugin extends Plugin {
 
     @Subscribe
     public void onGameStateChanged(GameStateChanged gameStateChanged) {
-        if (gameStateChanged.getGameState() == GameState.LOGIN_SCREEN) {
-            log.error("Login screen");
-            previouslyOnLoginScreen = true;
-            updatePanelData(new HashMap<>()); // Hide info when on login screen, as it may be out of date.
-            refreshPanel();
-        } else if (gameStateChanged.getGameState() == GameState.LOGGED_IN && previouslyOnLoginScreen) {
-            previouslyOnLoginScreen = false;
-            updatePanelData(gangInfoMap);
+        if (gameStateChanged.getGameState() == GameState.LOGGED_IN) {
             refreshPanel();
         }
     }
