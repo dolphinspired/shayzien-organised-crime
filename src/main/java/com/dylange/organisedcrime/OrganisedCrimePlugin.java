@@ -36,6 +36,7 @@ import net.runelite.http.api.worlds.WorldResult;
 import java.awt.image.BufferedImage;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import static com.dylange.organisedcrime.tools.WidgetConstants.GROUP_ID_INFORMATION_BOARD;
 import static com.dylange.organisedcrime.tools.WidgetConstants.GROUP_ID_NO_INFORMATION_ATM;
@@ -177,14 +178,20 @@ public class OrganisedCrimePlugin extends Plugin implements WorldClickedCallback
 
     private void clearStaleGangInfo() {
         Map<Integer, GangInfo> gangInfoCopy = new HashMap<>();
+        AtomicBoolean removedAnyStaleValue = new AtomicBoolean(false);
         gangInfoMap.forEach((world, gangInfo) -> {
             if (!gangInfo.getExpectedTime().isStale()) {
                 gangInfoCopy.put(world, gangInfo);
+            } else {
+                removedAnyStaleValue.set(true);
             }
         });
-        gangInfoMap = gangInfoCopy;
+
         ticksSinceLastStaleDataCull = 0;
-        updatePanelData(gangInfoMap);
+        if (removedAnyStaleValue.get()) {
+            gangInfoMap = gangInfoCopy;
+            updatePanelData(gangInfoMap);
+        }
     }
 
     private void refreshPanel() {
