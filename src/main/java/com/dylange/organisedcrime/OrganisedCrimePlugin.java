@@ -5,7 +5,6 @@ import com.dylange.organisedcrime.models.GangInfo;
 import com.dylange.organisedcrime.tools.InformationBoardTextReader;
 import com.dylange.organisedcrime.tools.ViewStateMapper;
 import com.dylange.organisedcrime.ui.OrganisedCrimePanel;
-import com.dylange.organisedcrime.ui.WorldClickedCallback;
 import com.google.inject.Provides;
 
 import javax.inject.Inject;
@@ -47,7 +46,7 @@ import static com.dylange.organisedcrime.tools.WidgetConstants.GROUP_ID_NO_INFOR
         description = "Keeps track of organised crime locations across worlds",
         enabledByDefault = true // TODO: set this to false when finished developing
 )
-public class OrganisedCrimePlugin extends Plugin implements WorldClickedCallback {
+public class OrganisedCrimePlugin extends Plugin {
     private static final int PANEL_REFRESH_TICK_THRESHOLD = 100; // 100 ticks, 1 minute.
     private static final int STALE_DATA_REFRESH_TICK_THRESHOLD = 100; // 50 ticks, 30 seconds.
 
@@ -85,7 +84,7 @@ public class OrganisedCrimePlugin extends Plugin implements WorldClickedCallback
 
     @Override
     protected void startUp() throws Exception {
-        panel = new OrganisedCrimePanel(config, this);
+        panel = new OrganisedCrimePanel(config, this::worldClicked);
 
         final BufferedImage icon = ImageUtil.getResourceStreamFromClass(getClass(), "icon.png");
 
@@ -104,7 +103,6 @@ public class OrganisedCrimePlugin extends Plugin implements WorldClickedCallback
         clientToolbar.removeNavigation(navButton);
     }
 
-    @Override
     public void worldClicked(int world) {
         hop(world);
     }
@@ -159,6 +157,7 @@ public class OrganisedCrimePlugin extends Plugin implements WorldClickedCallback
         if (widgetLoaded.getGroupId() != GROUP_ID_INFORMATION_BOARD) return;
         if (widgetLoaded.getGroupId() == GROUP_ID_NO_INFORMATION_ATM) {
             gangInfoMap.remove(client.getWorld());
+            updatePanelData(gangInfoMap);
             return;
         }
 

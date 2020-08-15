@@ -295,7 +295,7 @@ public class OrganisedCrimeLocations {
                             true
                     ),
                     new OrganisedCrimeLocation(
-                            "We've received reports of a gang meeting in the castle, possibly in one of the lesser used north-eastern rooms.",
+                            "We've received reports of a gang meeting in the castle, possibly in one of the lesser used north- eastern rooms.",
                             "The Kourend Castle in one of the north-eastern rooms.",
                             true
                     ),

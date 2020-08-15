@@ -9,23 +9,24 @@ import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.util.List;
+import java.util.function.Consumer;
 
 @Slf4j
 public class OrganisedCrimePanel extends PluginPanel {
 
-    private OrganisedCrimeConfig config;
+    private final OrganisedCrimeConfig config;
+    private final JPanel layoutPanel = new JPanel();
+    private final Consumer<Integer> onWorldClicked;
 
-    //overallKillsLabel.setFont(FontManager.getRunescapeSmallFont());
-
-    public OrganisedCrimePanel(OrganisedCrimeConfig config, WorldClickedCallback worldClickedCallback) {
+    public OrganisedCrimePanel(OrganisedCrimeConfig config, Consumer<Integer> onWorldClicked) {
         this.config = config;
+        this.onWorldClicked = onWorldClicked;
 
         setBorder(new EmptyBorder(6, 6, 6, 6));
         setBackground(ColorScheme.DARK_GRAY_COLOR);
         setLayout(new BorderLayout());
 
         // Create layout panel for wrapping
-        final JPanel layoutPanel = new JPanel();
         layoutPanel.setLayout(new BoxLayout(layoutPanel, BoxLayout.Y_AXIS));
         add(layoutPanel, BorderLayout.NORTH);
 
@@ -38,17 +39,14 @@ public class OrganisedCrimePanel extends PluginPanel {
     }
 
     public void display(List<LocationViewState> viewState) {
-        viewState.forEach(locationViewState -> log.error("View state item: " + locationViewState));
+        layoutPanel.removeAll();
+        viewState.forEach(locationViewState -> {
+            log.error("View state item: " + locationViewState);
+            SwingUtilities.invokeLater(() -> {
+                layoutPanel.add(new LocationPanel(locationViewState, onWorldClicked));
+                layoutPanel.revalidate();
+            });
+        });
     }
 
-    private JPanel getLocationView(LocationViewState locationViewState) {
-        JPanel locationContainer = new JPanel();
-
-        locationContainer.setLayout(new BorderLayout());
-        locationContainer.setBackground(ColorScheme.DARKER_GRAY_COLOR);
-        locationContainer.setBorder(new EmptyBorder(5, 5, 5, 10));
-        locationContainer.setVisible(true);
-
-        return locationContainer;
-    }
 }

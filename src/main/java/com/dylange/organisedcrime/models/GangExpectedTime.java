@@ -1,7 +1,7 @@
 package com.dylange.organisedcrime.models;
 
 public class GangExpectedTime {
-    private static final long STALE_THRESHOLD = 3 * 60 * 1000L;
+    private static final long STALE_THRESHOLD = 5 * 60 * 1000L; // 5 minutes
 
     private long timeRead;
     private long initialMinutesUntilAppearance;
@@ -25,10 +25,10 @@ public class GangExpectedTime {
         if (deltaTimeMinutes == 0) {
             return "Expected now";
         } else if (deltaTimeMinutes > 0) {
-            return String.format("~%s minutes until appearance", deltaTimeMinutes);
+            return String.format("~%s mins", deltaTimeMinutes);
         } else {
             long minutesSinceAppearance = deltaTimeMinutes * -1;
-            return String.format("~%s minutes late", minutesSinceAppearance);
+            return String.format("~%s mins late", minutesSinceAppearance);
         }
     }
 }
