@@ -49,7 +49,7 @@ import static com.dylange.organisedcrime.tools.WidgetConstants.GROUP_ID_NO_INFOR
 @PluginDescriptor(
         name = "Organised crime",
         description = "Keeps track of organised crime locations across worlds",
-        enabledByDefault = true // TODO: set this to false when finished developing
+        enabledByDefault = false
 )
 public class OrganisedCrimePlugin extends Plugin {
     private static final int PANEL_REFRESH_TICK_THRESHOLD = 50; // 50 ticks, 30 seconds.
