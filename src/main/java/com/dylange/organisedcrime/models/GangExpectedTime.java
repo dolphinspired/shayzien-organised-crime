@@ -28,7 +28,7 @@ public class GangExpectedTime {
             return String.format("~%s mins", deltaTimeMinutes);
         } else {
             long minutesSinceAppearance = deltaTimeMinutes * -1;
-            return String.format("~%s mins late", minutesSinceAppearance);
+            return String.format("~%s mins ago", minutesSinceAppearance);
         }
     }
 }

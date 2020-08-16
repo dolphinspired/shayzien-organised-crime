@@ -23,7 +23,6 @@ public class GangInfo {
 
         Matcher timeMatcher = timeRegex.matcher(timeMessage);
         if (timeMatcher.find()) {
-            log.error(String.format("Trying to parse \"%s\" for number.", timeMessage));
             this.expectedTime = new GangExpectedTime(
                     timeRead,
                     Integer.parseInt(timeMatcher.group())
@@ -31,7 +30,6 @@ public class GangInfo {
         } else {
             Matcher nowMatcher = nowRegex.matcher(timeMessage);
             if (nowMatcher.find()) {
-                log.error("Parsed \"now\" time");
                 this.expectedTime = new GangExpectedTime(timeRead, 0);
             } else {
                 throw new IllegalArgumentException(String.format("Failed to parse time from \"%s\"", timeMessage));

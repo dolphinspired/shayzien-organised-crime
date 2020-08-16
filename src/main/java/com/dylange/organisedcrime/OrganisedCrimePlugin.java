@@ -178,7 +178,6 @@ public class OrganisedCrimePlugin extends Plugin {
         try {
             final GangInfo gangInfo = InformationBoardTextReader.getDisplayedGangInfo(client);
             if (gangInfo != null) {
-                log.error("Location text: " + gangInfo.getLocationMessage());
                 gangInfoMap.put(gangInfo.getWorld(), gangInfo);
                 updatePanelData(gangInfoMap);
             }
@@ -201,7 +200,6 @@ public class OrganisedCrimePlugin extends Plugin {
             if (!gangInfo.getExpectedTime().isStale()) {
                 gangInfoCopy.put(world, gangInfo);
             } else {
-                log.error("Successfully removed stale data: W" + gangInfo.getWorld());
                 removedAnyStaleValue.set(true);
             }
         });

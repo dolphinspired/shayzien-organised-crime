@@ -44,7 +44,6 @@ public class OrganisedCrimePanel extends PluginPanel {
     public void display(List<LocationViewState> viewState) {
         layoutPanel.removeAll();
         viewState.forEach(locationViewState -> {
-            log.error("View state item: " + locationViewState);
             layoutPanel.add(new LocationPanel(locationViewState, onWorldClicked));
             layoutPanel.revalidate();
         });

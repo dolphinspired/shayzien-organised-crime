@@ -65,7 +65,6 @@ public class LocationPanel extends JPanel {
     }
 
     public void refreshWorldButtons() {
-        log.error("Revalidating location panel!");
         SwingUtilities.invokeLater(this::drawWorldsButtons);
     }
 
