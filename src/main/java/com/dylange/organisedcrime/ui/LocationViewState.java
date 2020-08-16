@@ -7,12 +7,12 @@ import java.util.Map;
 public class LocationViewState {
     private final String description;
     private final String image;
-    private final Map<Integer, GangExpectedTime> worldToGangExpectedTime;
+    private final Map<GangExpectedTime, Integer> expectedTimeToWorld;
 
-    public LocationViewState(String description, String image, Map<Integer, GangExpectedTime> worldToTimeRemainingText) {
+    public LocationViewState(String description, String image, Map<GangExpectedTime, Integer> expectedTimeToWorld) {
         this.description = description;
         this.image = image;
-        this.worldToGangExpectedTime = worldToTimeRemainingText;
+        this.expectedTimeToWorld = expectedTimeToWorld;
     }
 
     public String getDescription() {
@@ -23,8 +23,8 @@ public class LocationViewState {
         return image;
     }
 
-    public Map<Integer, GangExpectedTime> getWorldToExpectedTime() {
-        return worldToGangExpectedTime;
+    public Map<GangExpectedTime, Integer> getExpectedTimeToWorld() {
+        return expectedTimeToWorld;
     }
 
     @Override
@@ -32,7 +32,7 @@ public class LocationViewState {
         return "LocationViewState{" +
                 "description='" + description + '\'' +
                 ", image='" + image + '\'' +
-                ", worldToGangExpectedTime=" + worldToGangExpectedTime +
+                ", expectedTimeToWorld=" + expectedTimeToWorld +
                 '}';
     }
 }

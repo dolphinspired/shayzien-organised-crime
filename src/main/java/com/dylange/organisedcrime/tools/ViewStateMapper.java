@@ -37,8 +37,8 @@ public class ViewStateMapper {
 
         ArrayList<LocationViewState> viewStates = new ArrayList<>();
         locationToInfoMap.forEach((organisedCrimeLocation, gangInfoForLocation) -> {
-            HashMap<Integer, GangExpectedTime> worldToExpectedTime = new HashMap<>();
-            gangInfoForLocation.forEach(gangInfo -> worldToExpectedTime.put(gangInfo.getWorld(), gangInfo.getExpectedTime()));
+            SortedMap<GangExpectedTime, Integer> worldToExpectedTime = new TreeMap<>();
+            gangInfoForLocation.forEach(gangInfo -> worldToExpectedTime.put(gangInfo.getExpectedTime(), gangInfo.getWorld()));
 
             viewStates.add(
                     new LocationViewState(

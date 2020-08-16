@@ -35,7 +35,7 @@ public class LocationPanel extends JPanel {
         descriptionContainer.setBorder(new EmptyBorder(8, 8, 8, 8));
         descriptionContainer.setBackground(backgroundColour);
 
-        int numRows = viewState.getWorldToExpectedTime().keySet().size();
+        int numRows = viewState.getExpectedTimeToWorld().keySet().size();
         worldsContainer.setLayout(new GridLayout(numRows, 1, 0, 2));
         worldsContainer.setBorder(new EmptyBorder(8, 8, 8, 8));
         worldsContainer.setBackground(backgroundColour);
@@ -71,7 +71,7 @@ public class LocationPanel extends JPanel {
     private void drawWorldsButtons() {
         if (worldsContainer == null || viewState == null) return;
         worldsContainer.removeAll();
-        viewState.getWorldToExpectedTime().forEach((world, expectedTime) -> {
+        viewState.getExpectedTimeToWorld().forEach((expectedTime, world) -> {
             String buttonText = String.format("W%d %s", world, expectedTime.toString());
             JButton worldButton = new JButton(buttonText);
             worldButton.addActionListener(e -> onWorldClicked.accept(world));

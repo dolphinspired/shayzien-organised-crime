@@ -1,6 +1,6 @@
 package com.dylange.organisedcrime.models;
 
-public class GangExpectedTime {
+public class GangExpectedTime implements Comparable<GangExpectedTime> {
     private static final long STALE_THRESHOLD = 5 * 60 * 1000L; // 5 minutes
 
     private long timeRead;
@@ -12,23 +12,32 @@ public class GangExpectedTime {
     }
 
     public boolean isStale() {
-        long deltaTimeMillis = (timeRead + (initialMinutesUntilAppearance * 60 * 1000)) - System.currentTimeMillis();
+        long deltaTimeMillis = getExpectedAppearanceTime() - System.currentTimeMillis();
 
         return deltaTimeMillis * -1f > STALE_THRESHOLD;
     }
 
     @Override
     public String toString() {
-        long deltaTimeMillis = (timeRead + (initialMinutesUntilAppearance * 60 * 1000)) - System.currentTimeMillis();
-        long deltaTimeMinutes = (deltaTimeMillis / 1000 / 60) + 1;
+        long deltaTimeMillis = getExpectedAppearanceTime() - System.currentTimeMillis();
+        long deltaTimeMinutes = (deltaTimeMillis / 1000 / 60);
 
         if (deltaTimeMinutes == 0) {
             return "Now";
         } else if (deltaTimeMinutes > 0) {
-            return String.format("~%s mins", deltaTimeMinutes);
+            return String.format("~%s mins", deltaTimeMinutes + 1);
         } else {
-            long minutesSinceAppearance = deltaTimeMinutes * -1;
+            long minutesSinceAppearance = (deltaTimeMinutes * -1) + 1;
             return String.format("~%s mins ago", minutesSinceAppearance);
         }
+    }
+
+    @Override
+    public int compareTo(GangExpectedTime other) {
+        return (int)(this.getExpectedAppearanceTime() - other.getExpectedAppearanceTime());
+    }
+
+    private Long getExpectedAppearanceTime() {
+        return (timeRead + (initialMinutesUntilAppearance * 60 * 1000));
     }
 }

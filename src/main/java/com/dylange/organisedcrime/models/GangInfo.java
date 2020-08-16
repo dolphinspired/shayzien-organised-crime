@@ -6,7 +6,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 @Slf4j
-public class GangInfo {
+public class GangInfo implements Comparable<GangInfo> {
     private static Pattern timeRegex = Pattern.compile("([0-9]+)");
     private static Pattern nowRegex = Pattern.compile(".*(now|imminently).*");
 
@@ -62,5 +62,10 @@ public class GangInfo {
         } else {
             throw new IllegalStateException("Corresponding location info not found for data read from information board.");
         }
+    }
+
+    @Override
+    public int compareTo(GangInfo gangInfo) {
+        return 0;
     }
 }
