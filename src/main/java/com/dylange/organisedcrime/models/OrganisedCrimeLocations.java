@@ -112,7 +112,7 @@ public class OrganisedCrimeLocations {
                     ),
                     new OrganisedCrimeLocation(
                             OrganisedCrimeLocation.Area.Hosidius,
-                            "We've received reports of gang meeting in Hosidius, inside the pub.",
+                            "We've received reports of a gang meeting in Hosidius, inside the pub.",
                             "The Golden Field pub in the market square.",
                             "hosidius3.png",
                             true

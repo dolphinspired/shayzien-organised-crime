@@ -190,6 +190,7 @@ public class OrganisedCrimePlugin extends Plugin {
     public void onGameStateChanged(GameStateChanged gameStateChanged) {
         if (gameStateChanged.getGameState() == GameState.LOGGED_IN) {
             refreshPanel();
+            clearStaleGangInfo();
         }
     }
 

@@ -12,15 +12,12 @@ public class GangExpectedTime implements Comparable<GangExpectedTime> {
     }
 
     public boolean isStale() {
-        long deltaTimeMillis = getExpectedAppearanceTime() - System.currentTimeMillis();
-
-        return deltaTimeMillis * -1f > STALE_THRESHOLD;
+        return getTimeUntilExpectedAppearance() * -1f > STALE_THRESHOLD;
     }
 
     @Override
     public String toString() {
-        long deltaTimeMillis = getExpectedAppearanceTime() - System.currentTimeMillis();
-        long deltaTimeMinutes = (deltaTimeMillis / 1000 / 60);
+        long deltaTimeMinutes = (getTimeUntilExpectedAppearance() / 1000 / 60);
 
         if (deltaTimeMinutes == 0) {
             return "Now";
@@ -39,5 +36,9 @@ public class GangExpectedTime implements Comparable<GangExpectedTime> {
 
     private Long getExpectedAppearanceTime() {
         return (timeRead + (initialMinutesUntilAppearance * 60 * 1000));
+    }
+
+    private Long getTimeUntilExpectedAppearance() {
+        return getExpectedAppearanceTime() - System.currentTimeMillis();
     }
 }
