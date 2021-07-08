@@ -19,6 +19,7 @@ import net.runelite.api.World;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.WidgetLoaded;
+import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.chat.ChatColorType;
 import net.runelite.client.chat.ChatMessageBuilder;
@@ -35,6 +36,8 @@ import net.runelite.client.ui.NavigationButton;
 import net.runelite.client.util.ImageUtil;
 import net.runelite.client.util.WorldUtil;
 import net.runelite.http.api.worlds.WorldResult;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.awt.image.BufferedImage;
 import java.util.HashMap;
@@ -64,6 +67,7 @@ public class OrganisedCrimePlugin extends Plugin {
     private int displaySwitcherAttempts = 0;
 
     private static final int DISPLAY_SWITCHER_MAX_ATTEMPTS = 3;
+    private static final Logger logger = LoggerFactory.getLogger(OrganisedCrimePlugin.class);
 
     @Inject
     private Client client;
@@ -168,12 +172,16 @@ public class OrganisedCrimePlugin extends Plugin {
 
     @Subscribe
     public void onWidgetLoaded(WidgetLoaded widgetLoaded) {
-        if (widgetLoaded.getGroupId() != GROUP_ID_INFORMATION_BOARD) return;
+//        logger.debug("Widget loaded: " + widgetLoaded.getGroupId()); // Keeping this commented for future me needing to debug this again.
         if (widgetLoaded.getGroupId() == GROUP_ID_NO_INFORMATION_ATM) {
+            gangInfoMap.keySet().forEach(world -> logger.debug("Worlds before: " + world));
+            logger.debug("Removing world " + client.getWorld() + " from list.");
             gangInfoMap.remove(client.getWorld());
+            gangInfoMap.keySet().forEach(world -> logger.debug("Worlds after: " + world));
             updatePanelData(gangInfoMap);
             return;
         }
+        if (widgetLoaded.getGroupId() != GROUP_ID_INFORMATION_BOARD) return;
 
         try {
             final GangInfo gangInfo = InformationBoardTextReader.getDisplayedGangInfo(client);

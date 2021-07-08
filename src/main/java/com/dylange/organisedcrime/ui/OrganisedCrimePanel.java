@@ -39,6 +39,7 @@ public class OrganisedCrimePanel extends PluginPanel {
                 "View the information board to start tracking locations."
         );
         layoutPanel.add(errorPanel);
+        layoutPanel.revalidate();
     }
 
     public void display(List<LocationViewState> viewState) {
