@@ -269,7 +269,7 @@ public class OrganisedCrimeLocations {
                     ),
                     new OrganisedCrimeLocation(
                             OrganisedCrimeLocation.Area.Shayzien,
-                            "We've received reports of a gang meeting in the Shayzia Ruin, north east of our city. ",
+                            "We've received reports of a gang meeting in the Shayzia Ruin, north east of our city.",
                             "In the Shayzia Ruin.",
                             "shayzien4.png",
                             true
